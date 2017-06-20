@@ -69,8 +69,7 @@ sed -i "69s#.*#                  ${numpy_include_path}#" Makefile.config
 sed -i '91s/.*/WITH_PYTHON_LAYER := 1/' Makefile.config # compile Python layer
 
 # compile caffe and pycaffe
-#NUMBER_OF_CORES=$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)
-#echo $NUMBER_OF_CORES
+NUMBER_OF_CORES=$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)
 make all -j$NUMBER_OF_CORES
 make pycaffe -j$NUMBER_OF_CORES
 make test
