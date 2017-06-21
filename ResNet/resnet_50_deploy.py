@@ -112,8 +112,8 @@ def construc_net():
 
   net.pool5 = L.Pooling(branch_5c, pool = P.Pooling.AVE, kernel_size = 7, stride = 1)
   
-  net.fc5 = L.InnerProduct(net.pool5, num_output = 1000)
-  net.prob = L.Softmax(net.fc5)
+  net.fc6 = L.InnerProduct(net.pool5, num_output = 1000)
+  net.prob = L.Softmax(net.fc6)
 
   return net.to_proto()
 
