@@ -1,8 +1,13 @@
 ## caffe_toolkit
 Caffe toolkit, including installing Caffe, creating various networks.<br>
 
-### Automatically install Caffe (CentOS7)
+### 1.Automatically install Caffe (CentOS7)
 ```
 ./install_Caffe_CentOS7.sh
 ```
-**reference**: https://github.com/davidstutz/caffe-tools/blob/master/install_caffe.sh
+### 2.Construct networks
+
+#### ResNet-50
+http://ethereon.github.io/netscope/#/gist/ed849f9e0934e3b5e5a171248eb1293a
+
+
