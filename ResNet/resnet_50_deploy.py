@@ -55,7 +55,7 @@ def _block_4in1(major, minor, net, bottom, nout, pad, ks, stride):
 
 
 # branch
-#             [3in1]  \  
+#              [3in1] \  
 #                      | - branch
 # 4in1 - 4in1 - 3in1  /
 def _branch(major, net, bottom, nout, has_branch1=False, is_branch_2a=False):
@@ -90,23 +90,23 @@ def construc_net():
 
   net.pool1 = L.Pooling(block1, pool = P.Pooling.MAX, kernel_size = 3, stride = 2)
 
-  branch_2a = _branch('2a', net, net.pool1, 64, has_branch1=True, is_branch_2a=True)
+  branch_2a = _branch('2a', net, net.pool1, 64, has_branch1 = True, is_branch_2a = True)
   branch_2b = _branch('2b', net, branch_2a, 64)
   branch_2c = _branch('2c', net, branch_2b, 64)
 
-  branch_3a = _branch('3a', net, branch_2c, 128, has_branch1=True)
+  branch_3a = _branch('3a', net, branch_2c, 128, has_branch1 = True)
   branch_3b = _branch('3b', net, branch_3a, 128)
   branch_3c = _branch('3c', net, branch_3b, 128)
   branch_3d = _branch('3d', net, branch_3c, 128)
 
-  branch_4a = _branch('4a', net, branch_3d, 256, has_branch1=True)
+  branch_4a = _branch('4a', net, branch_3d, 256, has_branch1 = True)
   branch_4b = _branch('4b', net, branch_4a, 256)
   branch_4c = _branch('4c', net, branch_4b, 256)
   branch_4d = _branch('4d', net, branch_4c, 256)
   branch_4e = _branch('4e', net, branch_4d, 256)
   branch_4f = _branch('4f', net, branch_4e, 256)
 
-  branch_5a = _branch('5a', net, branch_4f, 512, has_branch1=True)
+  branch_5a = _branch('5a', net, branch_4f, 512, has_branch1 = True)
   branch_5b = _branch('5b', net, branch_5a, 512)
   branch_5c = _branch('5c', net, branch_5b, 512)
 
@@ -119,7 +119,8 @@ def construc_net():
 
 
 def main():
-  with open('deploy.prototxt', 'w') as f:
+  with open('resnet_50_deploy.prototxt', 'w') as f:
+    f.write('name: "ResNet-50_deploy"\n')
     f.write(str(construc_net()))
 
 if __name__ == '__main__':
