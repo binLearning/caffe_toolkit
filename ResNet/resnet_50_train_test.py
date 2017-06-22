@@ -120,28 +120,40 @@ def construc_net():
                           #crop_size = 224,
                           mean_value = [127.5, 127.5, 127.5])
 
-  net.data, net.label = L.ImageData(include = dict(phase = 0), # TRAIN = 0,in caffe_pb2.py
-                                    transform_param = _transform_train,
-                                    source = '../data/images_train.txt',
-                                    batch_size = 32,
-                                    shuffle = True,
-                                    #new_height = 224,
-                                    #new_width = 224,
-                                    #is_color = True,
-                                    ntop = 2)
+  #net.data, net.label = L.ImageData(include = dict(phase = 0), # TRAIN = 0,in caffe_pb2.py
+  #                                  transform_param = _transform_train,
+  #                                  source = '../data/images_train.txt',
+  #                                  batch_size = 32,
+  #                                  shuffle = True,
+  #                                  #new_height = 224,
+  #                                  #new_width = 224,
+  #                                  #is_color = True,
+  #                                  ntop = 2)
+  net.data, net.label = L.Data(include = dict(phase = 0),
+                               transform_param = _transform_train,
+                               source = '../data/images_train_lmdb',
+                               batch_size = 32, 
+                               backend = P.Data.LMDB,
+                               ntop = 2)
   
   # NOTE
   data_layer_train = net.to_proto()
 
-  net.data, net.label = L.ImageData(include = dict(phase = 1), # TEST = 1
-                                    transform_param = _transform_test,
-                                    source = '../data/images_test.txt',
-                                    batch_size = 4,
-                                    shuffle = False,
-                                    #new_height = 224,
-                                    #new_width = 224,
-                                    #is_color = True,
-                                    ntop = 2)
+  #net.data, net.label = L.ImageData(include = dict(phase = 1), # TEST = 1
+  #                                  transform_param = _transform_test,
+  #                                  source = '../data/images_test.txt',
+  #                                  batch_size = 4,
+  #                                  shuffle = False,
+  #                                  #new_height = 224,
+  #                                  #new_width = 224,
+  #                                  #is_color = True,
+  #                                  ntop = 2)
+  net.data, net.label = L.Data(include = dict(phase = 1),
+                               transform_param = _transform_test,
+                               source = '../data/images_test_lmdb',
+                               batch_size = 4,
+                               backend = P.Data.LMDB,
+                               ntop = 2)
 
   block1 = _block_first(net, net.data)
 
