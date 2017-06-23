@@ -6,6 +6,7 @@ import caffe
 from caffe import layers as L, params as P
 from caffe import to_proto
 
+
 # [Convolution - ReLU] * #stack - Pooling
 def _block_crp(major, stack_num, net, bottom, nout, pad=1, ks=3, stride=1):
   for minor in xrange(stack_num):
@@ -69,5 +70,6 @@ def main():
     f.write('name: "VGG-16_deploy"\n')
     f.write(str(construc_net()))
 
+    
 if __name__ == '__main__':
   main()
