@@ -16,7 +16,7 @@ fi
 # installing EPEL & update to the latest latest version of packages
 $SUDO_OR_NOT yum -y install epel-release
 $SUDO_OR_NOT yum clean all
-$SUDO_OR_NOT yum -y update
+$SUDO_OR_NOT yum -y update --exclude=kernel*
 
 # installing development tools
 $SUDO_OR_NOT yum -y install autoconf automake cmake gcc gcc-c++ libtool make pkgconfig unzip
@@ -58,7 +58,11 @@ source ~/.bash_profile
 # modify Makefile.config
 cd $CAFFE_INSTALL_ROOT/caffe
 cp -f Makefile.config.example Makefile.config
+# use CPU only
 sed -i '8s/.*/CPU_ONLY := 1/' Makefile.config # CPU only
+# use GPU
+#sed -i '5s/.*/USE_CUDNN := 1/' Makefile.config # use cuDNN
+#sed -i '29s/.*/CUDA_DIR := \/usr\/local\/cuda/' Makefile.config
 sed -i '50s/.*/BLAS := open/' Makefile.config # use OpenBLAS
 sed -i '54s/.*/BLAS_INCLUDE := \/usr\/include\/openblas/' Makefile.config
 sed -i '55s/.*/BLAS_LIB := \/usr\/lib64/' Makefile.config
