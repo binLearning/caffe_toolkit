@@ -1,7 +1,7 @@
 name: "ResNet-50_train_test"
 layer {
   name: "data"
-  type: "ImageData"
+  type: "Data"
   top: "data"
   top: "label"
   include {
@@ -14,15 +14,15 @@ layer {
     mean_value: 127.5
     mean_value: 127.5
   }
-  image_data_param {
-    source: "../data/images_train.txt"
+  data_param {
+    source: "../data/images_train_lmdb"
     batch_size: 32
-    shuffle: true
+    backend: LMDB
   }
 }
 layer {
   name: "data"
-  type: "ImageData"
+  type: "Data"
   top: "data"
   top: "label"
   include {
@@ -35,10 +35,10 @@ layer {
     mean_value: 127.5
     mean_value: 127.5
   }
-  image_data_param {
-    source: "../data/images_test.txt"
+  data_param {
+    source: "../data/images_test_lmdb"
     batch_size: 4
-    shuffle: false
+    backend: LMDB
   }
 }
 layer {
@@ -48,15 +48,12 @@ layer {
   top: "conv1"
   convolution_param {
     num_output: 64
+    bias_term: false
     pad: 3
     kernel_size: 7
     stride: 2
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -99,15 +96,12 @@ layer {
   top: "res2a_branch2a"
   convolution_param {
     num_output: 64
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -139,15 +133,12 @@ layer {
   top: "res2a_branch2b"
   convolution_param {
     num_output: 64
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -179,15 +170,12 @@ layer {
   top: "res2a_branch2c"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -213,15 +201,12 @@ layer {
   top: "res2a_branch1"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -260,15 +245,12 @@ layer {
   top: "res2b_branch2a"
   convolution_param {
     num_output: 64
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -300,15 +282,12 @@ layer {
   top: "res2b_branch2b"
   convolution_param {
     num_output: 64
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -340,15 +319,12 @@ layer {
   top: "res2b_branch2c"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -387,15 +363,12 @@ layer {
   top: "res2c_branch2a"
   convolution_param {
     num_output: 64
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -427,15 +400,12 @@ layer {
   top: "res2c_branch2b"
   convolution_param {
     num_output: 64
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -467,15 +437,12 @@ layer {
   top: "res2c_branch2c"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -514,15 +481,12 @@ layer {
   top: "res3a_branch2a"
   convolution_param {
     num_output: 128
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 2
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -554,15 +518,12 @@ layer {
   top: "res3a_branch2b"
   convolution_param {
     num_output: 128
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -594,15 +555,12 @@ layer {
   top: "res3a_branch2c"
   convolution_param {
     num_output: 512
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -628,15 +586,12 @@ layer {
   top: "res3a_branch1"
   convolution_param {
     num_output: 512
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 2
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -675,15 +630,12 @@ layer {
   top: "res3b_branch2a"
   convolution_param {
     num_output: 128
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -715,15 +667,12 @@ layer {
   top: "res3b_branch2b"
   convolution_param {
     num_output: 128
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -755,15 +704,12 @@ layer {
   top: "res3b_branch2c"
   convolution_param {
     num_output: 512
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -802,15 +748,12 @@ layer {
   top: "res3c_branch2a"
   convolution_param {
     num_output: 128
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -842,15 +785,12 @@ layer {
   top: "res3c_branch2b"
   convolution_param {
     num_output: 128
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -882,15 +822,12 @@ layer {
   top: "res3c_branch2c"
   convolution_param {
     num_output: 512
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -929,15 +866,12 @@ layer {
   top: "res3d_branch2a"
   convolution_param {
     num_output: 128
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -969,15 +903,12 @@ layer {
   top: "res3d_branch2b"
   convolution_param {
     num_output: 128
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1009,15 +940,12 @@ layer {
   top: "res3d_branch2c"
   convolution_param {
     num_output: 512
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1056,15 +984,12 @@ layer {
   top: "res4a_branch2a"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 2
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1096,15 +1021,12 @@ layer {
   top: "res4a_branch2b"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1136,15 +1058,12 @@ layer {
   top: "res4a_branch2c"
   convolution_param {
     num_output: 1024
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1170,15 +1089,12 @@ layer {
   top: "res4a_branch1"
   convolution_param {
     num_output: 1024
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 2
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1217,15 +1133,12 @@ layer {
   top: "res4b_branch2a"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1257,15 +1170,12 @@ layer {
   top: "res4b_branch2b"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1297,15 +1207,12 @@ layer {
   top: "res4b_branch2c"
   convolution_param {
     num_output: 1024
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1344,15 +1251,12 @@ layer {
   top: "res4c_branch2a"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1384,15 +1288,12 @@ layer {
   top: "res4c_branch2b"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1424,15 +1325,12 @@ layer {
   top: "res4c_branch2c"
   convolution_param {
     num_output: 1024
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1471,15 +1369,12 @@ layer {
   top: "res4d_branch2a"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1511,15 +1406,12 @@ layer {
   top: "res4d_branch2b"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1551,15 +1443,12 @@ layer {
   top: "res4d_branch2c"
   convolution_param {
     num_output: 1024
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1598,15 +1487,12 @@ layer {
   top: "res4e_branch2a"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1638,15 +1524,12 @@ layer {
   top: "res4e_branch2b"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1678,15 +1561,12 @@ layer {
   top: "res4e_branch2c"
   convolution_param {
     num_output: 1024
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1725,15 +1605,12 @@ layer {
   top: "res4f_branch2a"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1765,15 +1642,12 @@ layer {
   top: "res4f_branch2b"
   convolution_param {
     num_output: 256
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1805,15 +1679,12 @@ layer {
   top: "res4f_branch2c"
   convolution_param {
     num_output: 1024
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1852,15 +1723,12 @@ layer {
   top: "res5a_branch2a"
   convolution_param {
     num_output: 512
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 2
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1892,15 +1760,12 @@ layer {
   top: "res5a_branch2b"
   convolution_param {
     num_output: 512
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1932,15 +1797,12 @@ layer {
   top: "res5a_branch2c"
   convolution_param {
     num_output: 2048
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -1966,15 +1828,12 @@ layer {
   top: "res5a_branch1"
   convolution_param {
     num_output: 2048
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 2
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -2013,15 +1872,12 @@ layer {
   top: "res5b_branch2a"
   convolution_param {
     num_output: 512
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -2053,15 +1909,12 @@ layer {
   top: "res5b_branch2b"
   convolution_param {
     num_output: 512
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -2093,15 +1946,12 @@ layer {
   top: "res5b_branch2c"
   convolution_param {
     num_output: 2048
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -2140,15 +1990,12 @@ layer {
   top: "res5c_branch2a"
   convolution_param {
     num_output: 512
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -2180,15 +2027,12 @@ layer {
   top: "res5c_branch2b"
   convolution_param {
     num_output: 512
+    bias_term: false
     pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
@@ -2220,15 +2064,12 @@ layer {
   top: "res5c_branch2c"
   convolution_param {
     num_output: 2048
+    bias_term: false
     pad: 0
     kernel_size: 1
     stride: 1
     weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-      value: 0.2
+      type: "msra"
     }
   }
 }
