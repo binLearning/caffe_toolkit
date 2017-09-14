@@ -137,3 +137,9 @@ CIFAR-10数据集比较小，不需要用1202层这么复杂的网络，另外�
 检测算法使用Faster R-CNN架构，具体的细节见附件。 <br>
 ![](./data/table_7.png) <br>
 ![](./data/table_8.png) <br>
+
+
+### 疑惑
+对于该架构有个疑问，在3.3中介绍当维度增加时有两种方法可以保证维度一致，文章中推荐B方案，就是使用卷积核1x1步长2的卷积层来处理。
+但是这样做的话原来恒等映射的信息会丢失75%，那么使用核2x2步长2的max/average-pooling或者卷积层会不会更好一些？ <br>
+[#50 when the dimensions increase](https://github.com/KaimingHe/deep-residual-networks/issues/50) <br>
