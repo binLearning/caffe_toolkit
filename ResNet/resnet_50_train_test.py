@@ -7,16 +7,18 @@ from caffe import to_proto
 
 
 # filler
-# type:  'constant', 'gaussian', 'xavier'
+# type:  'constant', 'gaussian', 'msra', 'xavier'
 #        [default: 'xavier']
 # value: the value in constant filler
 #        [default: 0.2]
 # std:   the std value in Gaussian filler
 #        [default: 0.01]
-def _filler(filler_type='xavier', filler_value=0.2, filler_std=0.01):
+def _filler(filler_type='msra', filler_value=0.2, filler_std=0.01):
   filler = {}
 
-  if filler_type == 'xavier':
+  if filler_type == 'msra':
+    filler = dict(type = filler_type)
+  elif filler_type == 'xavier':
     filler = dict(type = filler_type)
   elif filler_type == 'gaussian':
     filler = dict(type = filler_type, std = filler_std)
@@ -33,7 +35,7 @@ def _block_first(net, bottom, nout=64, pad=3, ks=7, stride=2):
                             num_output = nout, pad = pad,
                             kernel_size = ks, stride = stride,
                             weight_filler = _filler(),
-                            bias_filler = _filler(filler_type = 'constant'))
+                            bias_term = False)
   net.bn_conv1 = L.BatchNorm(net.conv1, in_place = True)
   net.scale_conv1 = L.Scale(net.bn_conv1, bias_term = True, in_place = True)
   net.conv1_relu = L.ReLU(net.scale_conv1, in_place = True)
@@ -53,7 +55,7 @@ def _block_3in1(major, minor, net, bottom, nout, pad, ks, stride):
                                    num_output = nout, pad = pad,
                                    kernel_size = ks, stride = stride,
                                    weight_filler = _filler(),
-                                   bias_filler = _filler(filler_type = 'constant'))
+                                   bias_term = False)
   net[bn_layer]    = L.BatchNorm(net[conv_layer], in_place = True)
   net[scale_layer] = L.Scale(net[bn_layer], bias_term = True, in_place = True)
 
@@ -73,7 +75,7 @@ def _block_4in1(major, minor, net, bottom, nout, pad, ks, stride):
                                    num_output = nout, pad = pad,
                                    kernel_size = ks, stride = stride,
                                    weight_filler = _filler(),
-                                   bias_filler = _filler(filler_type = 'constant'))
+                                   bias_term = False)
   net[bn_layer]    = L.BatchNorm(net[conv_layer], in_place = True)
   net[scale_layer] = L.Scale(net[bn_layer], bias_term = True, in_place = True)
   net[relu_layer]  = L.ReLU(net[scale_layer], in_place = True)
