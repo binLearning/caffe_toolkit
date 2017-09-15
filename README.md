@@ -15,5 +15,10 @@ Caffe toolkit, including installing Caffe, creating various networks.<br>
 
 [ResNet-v2-164] http://ethereon.github.io/netscope/#/gist/3a7fc9f3e9cb0a8b2e3ef4638796c6d9 <br>
 
+### Reference
+[1] David Stutz, caffe-tools, https://github.com/davidstutz/caffe-tools. <br>
+[2] Kaiming He, deep-residual-networks, https://github.com/KaimingHe/deep-residual-networks. <br>
+[3] Kaiming He, resnet-1k-layers, https://github.com/KaimingHe/resnet-1k-layers. <br>
+
 ### Contact Info
 If you have any problem on this project, please contact me by sending email to binlearning@163.com. <br>
