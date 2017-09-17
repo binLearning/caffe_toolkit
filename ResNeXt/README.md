@@ -73,12 +73,49 @@ ResNeXt中的模块结构（图3(a)）与Inception-ResNet的模块结构（图3(
 会将输入张量在通道维度上拆分成不同组然后进行处理，然后将处理后的张量连接起来作为输出。这种block与ResNet中原始block的形式（图1-left）很相似，
 不同的是这些block更宽，并且是稀疏连接的。 <br>
 ![](./data/figure_3.png) <br>
+我们注意到只有block的深度大于2时才可以重新组织得到不同以往的拓扑结构，而深度只有2的block（见图4）重新组织也只是宽一些密集一些的模块。<br>
+![](./data/figure_4.png) <br>
+另外需要注意的是各小分支的变换不一定就是像图3中所示都是相同拓扑结构的，它们也可以是任意不同形式的变换。本文选取同结构的形式是为了使
+网络更加简洁已经易扩展，在这种情况下就可以像图3(c)中所示使用分组卷积很容易的实现ResNeXt。 <br>
+#### 3.4 Model Capacity
+ResNeXt在保持模型复杂度和参数规模不变的情况下提升了模型准确率。复杂度和参数数量可以用来评估模型的表示能力，在考察深度网络时基本都会用到。
+当考察相同复杂度下不同的基数C对模型性能的影响时，为了减少需要修改的超参数量，我们选取修改bottleneck（3x3卷积层）的宽度（通道数量）
+来适应基数的变化，因为它独立于block的输入/输出，这样就不需要对其他的超参数（如block的深度、输入/输出的宽度等）。 <br>
+![](./data/figure_1.png) <br>
+在图1-left中，原来的ResNet的block的参数数量有256\*64+3\*3\*64\*64+64\*256≈70k，当ResNeXt基数为C，bottleneck层宽度为d时（图1-right），
+参数数量为： <br>
+![](./data/formula_4.png) <br>
+当C=32，d=4时公式(4)约等于70k，与原来的模型基本相同，表2展示了C与d的关系。 <br>
+![](./data/table_2.png) <br>
+表1比较了具有相似复杂度的ResNet-50和ResNeXt-50，虽然复杂度只是大致相似，但之间的差异很小不至于影响结果。 <br>
 
+### 4. Implementation details
+维度增加（空间尺寸减小）时沿用ResNet中的B方案，但是卷积核由1x1变为3x3，步幅仍然为2。[注：这个改变就消除了ResNet中信息会丢失的疑问]
+本文实现的方案选取了如图3(c)中的形式，block内部的设计（权值层与BN、ReLU的位置安排）按照ResNet方式，而不是ResNet-v2方式。
+图3中三种方案是等价的，我们训练了三种形式都得到了相同的结果，选取3(c)来实现是因为这个方案更简洁，运行速度也更快。 <br>
 
-
-
-
-
-
-
-
+### 5. Experiments
+#### 5.1 Experiments on ImageNet-1K
+**Cardinality vs. Width**  <br>
+首先考察基数对模型性能的影响。结果见表3，训练曲线见图5。 <br>
+![](./data/table_3.png) <br>
+![](./data/figure_5.png) <br>
+复杂度不变的情况下，随着基数的增大错误率持续减小。ResNeXt的训练误差比ResNet的要小，说明性能的提升是来源于更强的表示能力而不是正则化。
+从表3中可以看出，当bottleneck的宽度很小时，增加基数对模型性能的提升趋于饱和，所以bottleneck宽度的选取一般不小于4d。 <br>
+**Increasing Cardinality vs. Deeper/Wider**  <br>
+考察增加深度/宽度/基数对网络性能的提升。具体表现见表4。 <br>
+![](./data/table_4.png) <br>
+从表4中可以看出，通过增大基数来提升网络能力比深度、宽度更有效。 <br>
+**Performance** <br>
+Torch对分组卷积的实现优化不理想，运行开支比较大。 <br>
+**Comparisons with state-of-the-art results** <br>
+表5展示了ResNeXt与各种之前最先进的模型的性能对比。 <br>
+![](./data/table_5.png) <br>
+#### 5.2 Experiments on ImageNet-5K
+![](./data/table_6.png) <br>
+![](./data/figure_6.png) <br>
+#### 5.3 Experiments on CIFAR
+![](./data/table_7.png) <br>
+![](./data/figure_7.png) <br>
+#### 5.4 Experiments on COCO object detection
+![](./data/table_8.png) <br>
