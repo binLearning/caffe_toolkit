@@ -58,33 +58,39 @@ ResNeXt中只有3x3卷积采用分组卷积，那么每个残差block中93.4%的
 逐通道卷积理论上有很低的计算量，但在低功率移动设备上很难有效实现，与密集运算相比计算/内存访问率要差，Xception论文中也提到了这个问题。
 在ShuffleNet中故意只在bottleneck层（3x3卷积）上使用逐通道卷积以避免这种开支。 <br>
 #### 3.3 Network Architecture
+ShuffleNet网络的配置见表1。 <br>
+![](./data/table_1.png) <br>
+需要注意的几点：第一个逐点卷积（1x1卷积）不做分组处理，以为输入通道数量相对较小；每阶段（stage）中的第一个block做空间维度减半；
+每个block中的bottleneck层（3x3卷积层）的通道数是block输出通道数的1/4。 <br>
+在ShuffleNet单元中分组数量g控制着1x1卷积连接的稀疏程度。从表1中可以看出，在保持计算量基本不变的前提下，分组越多就可以使用越多的通道，
+这有助于网络编码更多信息，虽然卷积核可能会因为有限的输入通道数发生退化现象。 <br>
+在通道数量上使用缩放因子s来调节网络复杂度，文中以sx表示。通道数乘s，模型的复杂度大约变为s平方倍。 <br>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### 4 Experiments
+#### 4.1 Ablation Study
+ShuffleNet的基础是逐点分组卷积和通道重排，分别考察这两者的作用。 <br>
+##### 4.1.1 On the Importance of Pointwise Group Convolutions
+不同分组数量的性能见表2。 <br>
+![](./data/table_2.png) <br>
+从表2中可以看出，分组卷积可以提升网络性能，并且网络越小越可以从分组数量的增加中获益，而规模较大的则会趋于饱和。
+arch2减少stage3中的block数量但增加每个block中的特征图数量，整体的复杂度基本保持不变，性能比之前有一定提升，
+这说明更宽（wider）的特征图对于较小的模型更为重要。 <br>
+##### 4.1.2 Channel Shuffle vs. No Shuffle
+通道重排的作用是使得信息可以在多个分组的卷积层中跨组传播，表3展示了使用或不使用通道重排的性能比对。 <br>
+![](./data/table_3.png) <br>
+从表3中可以看出，当分组数量g很大时，添加通道重排可以极大提升性能，这显示了跨通道信息交换的重要性。 <br>
+#### 4.2 Comparison with Other Structure Units
+与最近几年先进网络架构的性能比对见表4。 <br>
+![](./data/table_4.png) <br>
+#### 4.3 Comparison with MobileNets and Other Frameworks
+表5展示了ShuffleNet和MobileNet在复杂度、准确率等方面的比对。 <br>
+![](./data/table_5.png) <br>
+表6比较了ShuffleNet与一些主流网络的复杂度。 <br>
+![](./data/table_6.png) <br>
+#### 4.4 Generalization Ability
+为了评估ShuffleNet的泛化能力，使用Faster-RCNN框架和ShuffleNet在MS COCO检测数据集上进行测试，具体性能见表7。 <br>
+![](./data/table_7.png) <br>
+#### 4.5 Actual Speedup Evaluation
+由于内存访问和其他开支的影响，理论上4倍的复杂度削减在实际实现中只能提速约2.6倍。具体比对见表8。 <br>
+![](./data/table_8.png) <br>
+ShuffleNet 0.5x相比AlexNet理论上应提速18倍，实际测试提速13倍，相比于其他一些与AlexNet性能基本相同的网络或加速方法要快得多。
