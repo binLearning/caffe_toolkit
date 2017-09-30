@@ -43,6 +43,8 @@ ResNeXt中只有3x3卷积采用分组卷积，那么每个残差block中93.4%的
 然后将细分的子组分别传输到下一层的不同组中。这个操作可以由通道重排（channel shuffle）来实现：假设分为g个组进行卷积，
 每组输出n个通道，那么输出的总通道数就是gxn，先将输出的维度变成(g,n)，然后转置，最后还原为nxg的数据即可，结果如图1(c)所示。
 将通道重排后的数据作为下一层分组卷积的输入即可，这样的操作不要求两个分组卷积层有相同的分组数量。 <br>
+通道重排（channel shuffle）流程见下图： <br>
+![](./data/channel_shuffle.jpg) <br>
 #### 3.2 ShuffleNet Unit
 之前的网络（ResNeXt、Xception）只对3x3卷积进行分组/逐通道卷积，现在在1x1卷积（也称为pointwise convolution）上也应用分组卷积，
 称为逐点分组卷积（1x1卷积+分组卷积），然后再加上通道重排操作，就可以在ResNet的基础上构建ShuffleNet，其单元结构见图2。 <br>
